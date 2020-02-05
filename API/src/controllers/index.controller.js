@@ -1,12 +1,4 @@
-const { Pool } = require('pg');
-
-const pool = new Pool({
-	host: 'localhost',
-	user: 'postgres',
-	password: 'root',
-	database: 'firstapi',
-	port: '5432'
-})
+const pool = require('./conexion.controller');
 
 
 const getUsers = async (req, res) => {
