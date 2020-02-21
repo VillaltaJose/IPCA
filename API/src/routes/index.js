@@ -1,13 +1,32 @@
 const { Router } = require('express');
 const router = Router();
-
-const { getUsers, setUser, getUserById, delUserById } = require('../controllers/index.controller');
-
 module.exports = router;
 
-router.get('/users', getUsers);
-router.get('/users/:id', getUserById);
+/*========== CRUD PATRONES ==========*/
+const patron = require('../controllers/patrones.controller');
 
-router.post('/users', setUser);
+router.get('/patrones', patron.getPatrones);
+router.get('/patrones/:id', patron.getPatronById);
+router.post('/patrones', patron.setPatron);
+router.put('/patrones', patron.uptPatron);
 
-router.delete('/users/:id', delUserById);
+
+/*========== CRUD PATRONES ==========*/
+/*const terapista = require('../controllers/terapistas.controller');
+
+router.get('/terapistas', terapista.getTerapistas);
+router.get('/terapistas/:id', terapista.getTerapistaByID);
+router.post('/terapistas', terapista.setTerapista);
+router.put('/terapistas', terapista.updateTerapista);
+router.delete('/terapistas/:id', terapista.delTerapistaByID);*/
+
+/*========== CRUD EMPLEADOS ==========*/
+const empleado = require('../controllers/empleados.controller');
+
+router.get('/empleados', empleado.getEmpleados);
+router.post('/empleados', empleado.setEmpleado);
+
+/*========== LOGIN ==========*/
+const login = require('../controllers/login.controller');
+
+router.post('/login', login.doLogin);
