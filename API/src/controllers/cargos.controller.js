@@ -1,12 +1,12 @@
 const pool = require('./conexion.controller');
 
-const getPatrones = async (req, res) => {
-	const response = await pool.query(`SELECT * FROM "IPCA".obtener_secuencias(0);`);
+const getCargos = async (req, res) => {
+	const response = await pool.query(`SELECT * FROM "IPCA".obtener_cargos(0);`);
 	
 	if(response.rowCount == 0) {
 		res.json({
 			message: `No hay datos`,
-			description: `No existen roles registrados`
+			description: `No existen cargos registrados`
 		});
 	} else {
 		res.status(200).json(response.rows);
@@ -15,13 +15,13 @@ const getPatrones = async (req, res) => {
 	console.log(response);
 }
 
-const getPatronById = async (req, res) => {
-	const response = await pool.query(`SELECT * FROM "IPCA".obtener_secuencias(${[req.params.id]});`);
+const getCargoById = async (req, res) => {
+	const response = await pool.query(`SELECT * FROM "IPCA".obtener_cargos(${[req.params.id]});`);
 
 	if(response.rowCount == 0) {
 		res.json({
-			message: `Patron no encontrado`,
-			description: `El patron con el código ${[req.params.id]} no existe.`
+			message: `Cargo no encontrado`,
+			description: `El cargo con el código ${[req.params.id]} no existe.`
 		});
 	} else {
 		res.status(200).json(response.rows);
@@ -30,21 +30,17 @@ const getPatronById = async (req, res) => {
 	console.log(response);
 }
 
-const setPatron = async (req, res) => {
+const setCargo = async (req, res) => {
 	const {
 		nombre,
-		secuencia,
-		tiempo,
 		descripcion
 	} = req.body;
 
 	const response = await pool.query(
-		`CALL "IPCA".agregar_secuencia(
-			'${nombre}', 
-			'${secuencia}', 
-			${tiempo}, 
-			'${descripcion}', 
-			null, 
+		`CALL "IPCA".agregar_cargo(
+			'${nombre}',
+			'${descripcion}',
+			null,
 			null
 		)`
 	);
@@ -58,12 +54,10 @@ const setPatron = async (req, res) => {
 		});
 	} else {
 		res.json({
-			message: "Patron actualizado correctamente",
+			message: "Cargo agregado exitosamente",
 			body: {
-				patron: {
+				cargo: {
 					nombre,
-					secuencia,
-					tiempo,
 					descripcion
 				}
 			}
@@ -71,23 +65,19 @@ const setPatron = async (req, res) => {
 	}
 }
 
-const upPatron = async (req, res) => {
+const upCargo = async (req, res) => {
 	const {
 		codigo,
 		nombre,
-		secuencia,
-		tiempo,
 		descripcion
 	} = req.body;
 
 	const response = await pool.query(
-		`CALL "IPCA".actualizar_secuencia(
-			'${codigo}', 
-			'${nombre}', 
-			'${secuencia}', 
-			${tiempo}, 
-			'${descripcion}', 
-			null, 
+		`CALL "IPCA".actualizar_cargo(
+			${codigo},
+			'${nombre}',
+			'${descripcion}',
+			null,
 			null
 		)`
 	);
@@ -101,13 +91,11 @@ const upPatron = async (req, res) => {
 		});
 	} else {
 		res.json({
-			message: "Patron actualizado correctamente",
+			message: "Cargo actualizado exitosamente",
 			body: {
-				patron: {
+				cargo: {
 					codigo,
 					nombre,
-					secuencia,
-					tiempo,
 					descripcion
 				}
 			}
@@ -115,8 +103,8 @@ const upPatron = async (req, res) => {
 	}
 }
 
-const delPatron = async (req, res) => {
-	const response = await pool.query(`CALL "IPCA".eliminar_secuencia(${[req.params.id]}, null, null);`);
+const delCargo = async (req, res) => {
+	const response = await pool.query(`CALL "IPCA".eliminar_cargo(${[req.params.id]}, null, null);`);
 
 	console.log(response);
 	if(response.rows[0]['pv_error'] || response.rows[0]['pv_error'] != null) {
@@ -125,14 +113,14 @@ const delPatron = async (req, res) => {
 			description: response.rows[0]['pv_error']
 		});
 	} else {
-		res.json({message: "Patron eliminado exitosamente"});
+		res.json({message: "Cargo eliminado exitosamente"});
 	}
 }
 
 module.exports = {
-	getPatrones,
-	getPatronById,
-	setPatron,
-	upPatron,
-	delPatron
+	getCargos,
+	getCargoById,
+	setCargo,
+	upCargo,
+	delCargo
 }

@@ -1,7 +1,7 @@
 const pool = require('./conexion.controller');
 
-const getPatrones = async (req, res) => {
-	const response = await pool.query(`SELECT * FROM "IPCA".obtener_secuencias(0);`);
+const getRoles = async (req, res) => {
+	const response = await pool.query(`SELECT * FROM "IPCA".obtener_roles(0);`);
 	
 	if(response.rowCount == 0) {
 		res.json({
@@ -15,13 +15,13 @@ const getPatrones = async (req, res) => {
 	console.log(response);
 }
 
-const getPatronById = async (req, res) => {
-	const response = await pool.query(`SELECT * FROM "IPCA".obtener_secuencias(${[req.params.id]});`);
+const getRolesById = async (req, res) => {
+	const response = await pool.query(`SELECT * FROM "IPCA".obtener_roles(${[req.params.id]});`);
 
 	if(response.rowCount == 0) {
 		res.json({
-			message: `Patron no encontrado`,
-			description: `El patron con el código ${[req.params.id]} no existe.`
+			message: `Cargo no encontrado`,
+			description: `El rol con el código ${[req.params.id]} no existe.`
 		});
 	} else {
 		res.status(200).json(response.rows);
@@ -30,21 +30,19 @@ const getPatronById = async (req, res) => {
 	console.log(response);
 }
 
-const setPatron = async (req, res) => {
+const setRol = async (req, res) => {
 	const {
 		nombre,
-		secuencia,
-		tiempo,
-		descripcion
+		descripcion,
+		permisos
 	} = req.body;
 
 	const response = await pool.query(
-		`CALL "IPCA".agregar_secuencia(
-			'${nombre}', 
-			'${secuencia}', 
-			${tiempo}, 
-			'${descripcion}', 
-			null, 
+		`CALL "IPCA".agregar_rol(
+			'${nombre}',
+			'${descripcion}',
+			'${permisos}',
+			null,
 			null
 		)`
 	);
@@ -58,36 +56,33 @@ const setPatron = async (req, res) => {
 		});
 	} else {
 		res.json({
-			message: "Patron actualizado correctamente",
+			message: "Rol agregado exitosamente",
 			body: {
-				patron: {
+				cargo: {
 					nombre,
-					secuencia,
-					tiempo,
-					descripcion
+					descripcion,
+					permisos
 				}
 			}
 		});
 	}
 }
 
-const upPatron = async (req, res) => {
+const upRol = async (req, res) => {
 	const {
 		codigo,
 		nombre,
-		secuencia,
-		tiempo,
-		descripcion
+		descripcion,
+		permisos
 	} = req.body;
 
 	const response = await pool.query(
-		`CALL "IPCA".actualizar_secuencia(
-			'${codigo}', 
-			'${nombre}', 
-			'${secuencia}', 
-			${tiempo}, 
-			'${descripcion}', 
-			null, 
+		`CALL "IPCA".actualizar_rol(
+			${codigo},
+			'${nombre}',
+			'${descripcion}',
+			'${permisos}',
+			null,
 			null
 		)`
 	);
@@ -101,22 +96,21 @@ const upPatron = async (req, res) => {
 		});
 	} else {
 		res.json({
-			message: "Patron actualizado correctamente",
+			message: "Rol actualizado exitosamente",
 			body: {
-				patron: {
+				cargo: {
 					codigo,
 					nombre,
-					secuencia,
-					tiempo,
-					descripcion
+					descripcion,
+					permisos
 				}
 			}
 		});
 	}
 }
 
-const delPatron = async (req, res) => {
-	const response = await pool.query(`CALL "IPCA".eliminar_secuencia(${[req.params.id]}, null, null);`);
+const delRol = async (req, res) => {
+	const response = await pool.query(`CALL "IPCA".eliminar_rol(${[req.params.id]}, null, null);`);
 
 	console.log(response);
 	if(response.rows[0]['pv_error'] || response.rows[0]['pv_error'] != null) {
@@ -125,14 +119,14 @@ const delPatron = async (req, res) => {
 			description: response.rows[0]['pv_error']
 		});
 	} else {
-		res.json({message: "Patron eliminado exitosamente"});
+		res.json({message: "Rol eliminado exitosamente"});
 	}
 }
 
 module.exports = {
-	getPatrones,
-	getPatronById,
-	setPatron,
-	upPatron,
-	delPatron
+	getRoles,
+	getRolesById,
+	setRol,
+	upRol,
+	delRol
 }

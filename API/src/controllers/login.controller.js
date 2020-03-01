@@ -3,7 +3,7 @@ const pool = require('./conexion.controller');
 const crypto = require('crypto');
 const key = 'Ml6I23Sw0B1P/oTZpSQyjDLfcEp+LKlUjdgE8KwhUyVVZds2RYspI1DzJw6GPAnE';
 
-const doLogin = async (req, res) => {
+const doLoginApp = async (req, res) => {
 	const { usuario, contrasena } = req.body;
 
 	//Encriptacion
@@ -20,5 +20,5 @@ const doLogin = async (req, res) => {
 
 
 module.exports = {
-	doLogin
+	doLoginApp
 }
