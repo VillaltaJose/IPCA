@@ -17,6 +17,7 @@ const empleado = require('../controllers/empleados.controller');
 router.get('/empleados', empleado.getEmpleados);
 router.get('/empleados/:id', empleado.getEmpleadoByID);
 router.post('/empleados', empleado.setEmpleado);
+router.delete('/empleados/:id', empleado.delEmpleado);
 
 router.get('/terapistas', empleado.getTerapista);
 router.get('/terapistas/:id', empleado.getTerapistaByID);

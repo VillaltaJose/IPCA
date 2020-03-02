@@ -58,7 +58,7 @@ const setPatron = async (req, res) => {
 		});
 	} else {
 		res.json({
-			message: "Patron actualizado correctamente",
+			message: "Patron agregado correctamente",
 			body: {
 				patron: {
 					nombre,

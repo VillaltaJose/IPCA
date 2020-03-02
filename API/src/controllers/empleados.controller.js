@@ -161,6 +161,12 @@ const upEmpleado = async (req, res) => {
 	}
 }
 
+const delEmpleado = async (req, res) => {
+	const response = await pool.query(`CALL "IPCA".eliminar_empleado(${[req.params.id]}, null, null);`);
+	res.status(200).json(response.rows);
+	console.log(response);
+}
+
 /*======== TERAPISTAS ========*/
 const setTerapista = async (req, res) => {
 	const {
@@ -217,6 +223,7 @@ module.exports = {
 	getEmpleados,
 	getEmpleadoByID,
 	setEmpleado,
+	delEmpleado,
 	upEmpleado,
 	getTerapista,
 	getTerapistaByID,
